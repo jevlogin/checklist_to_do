@@ -1,36 +1,44 @@
-import 'package:checklist_to_do/firebase_options.dart';
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_bloc_logger/talker_bloc_logger.dart';
+import 'package:talker_flutter/talker_flutter.dart';
+import 'package:user_repository/user_repository.dart';
 
-void main() async {
+import 'app.dart';
+import 'firebase_options.dart';
+
+GetIt getIt = GetIt.instance;
+final talker = TalkerFlutter.init();
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  getIt.registerSingleton(talker);
+  GetIt.I<Talker>().info('App started with Talker');
 
   final firebase = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  talker.info(firebase.options.projectId);
 
-  runApp(const MyApp());
-}
+  getIt.registerLazySingleton<UserRepository>(
+          () => FirebaseUserRepo(FirebaseAuth.instance));
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const Scaffold(
-          body: Center(
-            child: Text(
-              'This is Check list To Do',
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
-        ));
-  }
+  Bloc.observer = TalkerBlocObserver(
+      talker: talker,
+      settings: const TalkerBlocLoggerSettings(
+        printEventFullData: false,
+        printStateFullData: false,
+      ));
+
+  FlutterError.onError = (details) => talker.handle(details.exception, details.stack);
+
+  runZonedGuarded(() => runApp(MyApp()),
+          (error, stack) => talker.handle(error, stack));
 }
