@@ -11,14 +11,14 @@ import 'package:user_repository/user_repository.dart';
 
 
 @RoutePage()
-class MyAppView extends StatefulWidget {
-  const MyAppView({super.key});
+class MyAppViewScreen extends StatefulWidget {
+  const MyAppViewScreen({super.key});
 
   @override
-  State<MyAppView> createState() => _MyAppViewState();
+  State<MyAppViewScreen> createState() => _MyAppViewScreenState();
 }
 
-class _MyAppViewState extends State<MyAppView> {
+class _MyAppViewScreenState extends State<MyAppViewScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(

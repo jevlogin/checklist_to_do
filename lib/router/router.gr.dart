@@ -24,7 +24,7 @@ abstract class _$AppRouter extends RootStackRouter {
     MyAppViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const MyAppView(),
+        child: const MyAppViewScreen(),
       );
     },
     WelcomeRoute.name: (routeData) {
@@ -51,7 +51,7 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MyAppView]
+/// [MyAppViewScreen]
 class MyAppViewRoute extends PageRouteInfo<void> {
   const MyAppViewRoute({List<PageRouteInfo>? children})
       : super(
@@ -59,7 +59,7 @@ class MyAppViewRoute extends PageRouteInfo<void> {
           initialChildren: children,
         );
 
-  static const String name = 'MyAppView';
+  static const String name = 'MyAppViewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
