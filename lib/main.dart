@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -27,7 +28,7 @@ Future<void> main() async {
   talker.info(firebase.options.projectId);
 
   getIt.registerLazySingleton<UserRepository>(
-          () => FirebaseUserRepo(FirebaseAuth.instance));
+          () => FirebaseUserRepo());
 
 
   Bloc.observer = TalkerBlocObserver(
@@ -39,6 +40,6 @@ Future<void> main() async {
 
   FlutterError.onError = (details) => talker.handle(details.exception, details.stack);
 
-  runZonedGuarded(() => runApp(MyApp()),
+  runZonedGuarded(() => runApp(const MyApp()),
           (error, stack) => talker.handle(error, stack));
 }

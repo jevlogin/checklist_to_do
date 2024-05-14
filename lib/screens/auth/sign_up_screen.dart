@@ -1,8 +1,12 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:checklist_to_do/blocs/authentication/authentication_bloc.dart';
+import 'package:checklist_to_do/blocs/authentication/authentication_state.dart';
 import 'package:checklist_to_do/blocs/sign_in/sign_in_bloc.dart';
 import 'package:checklist_to_do/blocs/sign_in/sign_in_event.dart';
 import 'package:checklist_to_do/blocs/sign_up/sign_up_bloc.dart';
 import 'package:checklist_to_do/blocs/sign_up/sign_up_event.dart';
 import 'package:checklist_to_do/blocs/sign_up/sign_up_state.dart';
+import 'package:checklist_to_do/router/router.dart';
 import 'package:checklist_to_do/screens/auth/components/my_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,12 +40,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return BlocListener<SignUpBloc, SignUpState>(
       listener: (context, state) {
-        // TODO: implement listener}
         if (state is SignUpSuccessState) {
           setState(() {
             signUpRequired = false;
           });
-          Navigator.pop(context);
+          AutoRouter.of(context).back();
         } else if (state is SignUpProcessState) {
           setState(() {
             signUpRequired = true;
@@ -256,6 +259,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   SignUpRequiredEvent(
                                       myUser, passwordController.text));
                             });
+
+                            // AutoRouter.of(context).push(const HomeRoute());
+
                           }
                         },
                         style: TextButton.styleFrom(

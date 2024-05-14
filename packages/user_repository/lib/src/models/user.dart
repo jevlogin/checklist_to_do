@@ -26,21 +26,13 @@ class MyUser extends Equatable {
   }
 
   MyUserEntity toEntity() {
-    return MyUserEntity(
-        userId: userId,
-        email: email,
-        name: name
-    );
+    return MyUserEntity(userId: userId, email: email, name: name);
   }
 
   static MyUser fromEntity(MyUserEntity entity) {
     return MyUser(
-      userId: entity.userId,
-      email: entity.email,
-      name: entity.name
-    );
+        userId: entity.userId, email: entity.email, name: entity.name);
   }
-
 
   @override
   List<Object?> get props => [userId, email, name];

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:checklist_to_do/blocs/authentication/authentication_bloc.dart';
 import 'package:checklist_to_do/blocs/sign_in/sign_in_bloc.dart';
 import 'package:checklist_to_do/blocs/sign_up/sign_up_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:checklist_to_do/screens/auth/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
@@ -75,15 +77,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     child: Column(
                       children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 50.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 50.0),
                           child: TabBar(
                             controller: tabController,
                             unselectedLabelColor: Theme.of(context)
                                 .colorScheme
-                                .onBackground
+                                .onSurface
                                 .withOpacity(0.5),
-                            labelColor:
-                                Theme.of(context).colorScheme.onBackground,
+                            labelColor: Theme.of(context).colorScheme.onSurface,
                             tabs: const [
                               Padding(
                                 padding: EdgeInsets.all(12.0),
@@ -104,23 +105,24 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         ),
                         Expanded(
                             child: TabBarView(
-                              controller: tabController,
-                              children: [
-                                BlocProvider<SignInBloc>(
-                                    create: (context) => SignInBloc(
-                                        repository: context.read<AuthenticationBloc>().userRepository
-                                    ),
-                                  child: const SignInScreen(),
-                                ),
-                                BlocProvider<SignUpBloc>(
-                                    create: (context) => SignUpBloc(
-                                        userRepository: context.read<AuthenticationBloc>().userRepository
-                                    ),
-                                  child: const SignUpScreen(),
-                                ),
-                              ],
-                            )
-                        )
+                            controller: tabController,
+                            children: [
+                              BlocProvider<SignInBloc>(
+                                create: (context) => SignInBloc(
+                                    repository: context
+                                        .read<AuthenticationBloc>()
+                                        .userRepository),
+                                child: const SignInScreen(),
+                              ),
+                              BlocProvider<SignUpBloc>(
+                                create: (context) => SignUpBloc(
+                                    userRepository: context
+                                        .read<AuthenticationBloc>()
+                                        .userRepository),
+                                child: const SignUpScreen(),
+                              ),
+                            ],
+                        ))
                       ],
                     ),
                   ),
