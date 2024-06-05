@@ -21,10 +21,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HomeScreen(),
       );
     },
+    ListItemsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ListItemsScreen(),
+      );
+    },
     MyAppViewRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const MyAppViewScreen(),
+      );
+    },
+    ProfileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProfileScreen(),
       );
     },
     WelcomeRoute.name: (routeData) {
@@ -51,6 +63,20 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ListItemsScreen]
+class ListItemsRoute extends PageRouteInfo<void> {
+  const ListItemsRoute({List<PageRouteInfo>? children})
+      : super(
+          ListItemsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ListItemsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [MyAppViewScreen]
 class MyAppViewRoute extends PageRouteInfo<void> {
   const MyAppViewRoute({List<PageRouteInfo>? children})
@@ -60,6 +86,20 @@ class MyAppViewRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MyAppViewRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProfileScreen]
+class ProfileRoute extends PageRouteInfo<void> {
+  const ProfileRoute({List<PageRouteInfo>? children})
+      : super(
+          ProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

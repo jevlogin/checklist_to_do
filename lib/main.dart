@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:user_repository/user_repository.dart';
@@ -14,32 +15,43 @@ import 'app.dart';
 import 'firebase_options.dart';
 
 GetIt getIt = GetIt.instance;
-final talker = TalkerFlutter.init();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  getIt.registerSingleton(talker);
+  setupDependencies();
+  await initFirebase();
+
   GetIt.I<Talker>().info('App started with Talker');
 
-  final firebase = await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  talker.info(firebase.options.projectId);
-
-  getIt.registerLazySingleton<UserRepository>(
-          () => FirebaseUserRepo());
-
-
   Bloc.observer = TalkerBlocObserver(
-      talker: talker,
+      talker: GetIt.I<Talker>(),
       settings: const TalkerBlocLoggerSettings(
         printEventFullData: false,
         printStateFullData: false,
       ));
 
-  FlutterError.onError = (details) => talker.handle(details.exception, details.stack);
+  FlutterError.onError = (details) => GetIt.I<Talker>().handle(details.exception, details.stack);
 
   runZonedGuarded(() => runApp(const MyApp()),
-          (error, stack) => talker.handle(error, stack));
+          (error, stack) => GetIt.I<Talker>().handle(error, stack));
+}
+
+void setupDependencies() {
+  final talker = TalkerFlutter.init();
+  getIt
+    ..registerSingleton(talker)
+    ..registerSingletonAsync<SharedPreferences>(() async => SharedPreferences.getInstance())
+    ..registerLazySingleton<UserRepository>(() => FirebaseUserRepo());
+}
+
+Future<void> initFirebase() async {
+  try {
+    final firebase = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    GetIt.I<Talker>().info(firebase.options.projectId);
+  } catch (e, st) {
+    GetIt.I<Talker>().handle('Error initialization Firebase\n$e', st);
+  }
 }

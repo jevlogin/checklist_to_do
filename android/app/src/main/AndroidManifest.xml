@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="checklist_to_do"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/checklist_todo_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
